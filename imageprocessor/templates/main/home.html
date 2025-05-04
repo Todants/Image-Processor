@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Processor</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Processor</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Process Image</button>
+    </form>
+
+    <hr>
+
+    <h2>100 Image Processor</h2>
+    <form method="post" enctype="multipart/form-data" action="{% url 'send_test_requests' %}">
+        {% csrf_token %}
+        <input type="file" name="image" required>
+        <button type="submit">Send 100 Test Requests</button>
+    </form>
+
+    <hr>
+
+    <h2>Processing History</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Filename</th>
+                <th>Result</th>
+                <th>Upload Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.filename }}</td>
+                <td>{{ record.result }}</td>
+                <td>{{ record.upload_time }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No records yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
